@@ -283,18 +283,19 @@
 			function addResult(hits, hitLocation) {
 				var groupedHits = ""
 				
-				for (var i = 0; i < hits.length; i++) {
-					groupedHits +=  hits[i];
-					if (i < hits.length-1)
+				for (var i = 0; i < hits['hits'].length; i++) {
+					groupedHits +=  hits['hits'][i];
+					if (i < hits['hits'].length-1)
 						groupedHits += "-";
 				}
+                total = hits['total']
 				
 				console.log(groupedHits)
 					
 				var location = $(".clusterhit-locations");
 				location.append("<tr class=\"click-highlight\">" +
 								"<td class=\"text-center\">" + hitLocation + "</td>" +
-								"<td class=\"text-center\">" + groupedHits + "</td></tr>");
+								"<td class=\"text-center\">" + groupedHits + " (" + String(total) + ")" + "</td></tr>");
 			}
 
             function rollAll(numShots, damagePerShot, clusterSize, clusterMod, facing, streak, floatingCrits) {
@@ -304,9 +305,10 @@
                 if (size == 40)
 					size = 31;
 
-				if (streak)
+				if (streak){
 					total = 11;
 					originalDieRoll = 11;
+                }
 					
                 total += clusterMod;
                 if (total > 12)
@@ -329,7 +331,8 @@
 
                 var hits = {}
                 for (var i = 0; i < damageGroups.length; i++) {
-                    var damageVal = String(damageGroups[i]);
+                    var damageVal = damageGroups[i];
+                    var damageString = String(damageVal);
                     var loc = locations[roll(2)-2][facing];
                     if (loc == Location._){
                         if (floatingCrits){
@@ -344,13 +347,14 @@
                             else if (facing == Facing.Right)
                                 loc = Location.RT
                         }
-                        damageVal = damageVal.concat('*')
+                        damageString = damageString.concat('*')
                     }
                     if (!hits[loc]){
-                        hits[loc] = [damageVal]
+                        hits[loc] = {'hits':[damageString], 'total':damageVal}
                     }
                     else{
-                        hits[loc].push(damageVal);
+                        hits[loc]['hits'].push(damageString);
+                        hits[loc]['total'] += damageVal;
                     } 
                 }        
 
