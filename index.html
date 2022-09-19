@@ -25,39 +25,52 @@
 				<input type="number" value="2" step="1" min="1" class="form-control clusterhit-size-damage select-all" />
 			</div>
 			<div class="form-group">
-				<label>Streak</small></label>
-				<input type="checkbox" id="streak" value="false" class="form-control select-all">
-			</div>
-			<div class="form-group">
-				<label>Artemis-IV</small></label>
-				<input type="checkbox" id="artemis" value="false" class="form-control select-all">
-			</div>
-			<div class="form-group">
-				<label>Target is using AMS</small></label>
-				<input type="checkbox" id="ams" value="false" class="form-control select-all">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th class="text-center">Streak</th>
+							<th class="text-center">Artemis-IV</th>
+							<th class="text-center">AMS</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="checkbox" id="streak" class="form-control"></td>
+							<td><input type="checkbox" id="artemis" class="form-control"></td>
+							<td><input type="checkbox" id="ams" class="form-control"></td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 			<div class="form-group">
 				<label>Additional cluster roll modifiers</label>
 				<input type="number" value="0" step="1" min="0" class="form-control clusterhit-size-add select-all" />
 			</div>
+			
 			<div class="form-group">
-				<label>Hit Direction</label>
-				<label class="container">Front/Rear
-					<input type="radio" checked="checked" name="facing" id="facing-front">
-					<span class="checkmark"></span>
-				</label>
-				<label class="container">Left
-					<input type="radio" name="facing" id="facing-left">
-					<span class="checkmark"></span>
-				</label>
-				<label class="container">Right
-					<input type="radio" name="facing" id="facing-right">
-					<span class="checkmark"></span>
-				</label>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th colspan="5" class="text-center">Hit Direction</th>
+						</tr>
+						<tr>
+							<th class="text-center">Left</th>
+							<th class="text-center">Front/Rear</th>
+							<th class="text-center">Right</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="radio" name="facing" id="facing-left" class="form-control"></td>
+							<td><input type="radio" checked name="facing" id="facing-front" class="form-control"></td>
+							<td><input type="radio" name="facing" id="facing-right" class="form-control"></td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 			<div class="form-group">
 				<label>Use floating crits?</small></label>
-				<input type="checkbox" id="floating-crits" value="True" class="form-control select-all">
+				<input type="checkbox" id="floating-crits" checked class="form-control select-all">
 			</div>
 			<div class="form-group">
 				<button class="btn btn-primary clusterhit-roll"><i class="fa fa-cube"></i>&nbsp;Roll</button>
