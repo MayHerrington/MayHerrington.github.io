@@ -46,6 +46,10 @@
 				<label>Additional cluster roll modifiers</label>
 				<input type="number" value="0" step="1" min="0" class="form-control clusterhit-size-add select-all" />
 			</div>
+            <div class="form-group">
+				<label>Repeats</label>
+				<input type="number" value="1" step="1" min="1" class="form-control clusterhit-size-repeats select-all" />
+			</div>
 			
 			<div class="form-group">
 				<table class="table table-hover">
@@ -157,7 +161,7 @@
                 8: 'Right Leg',
 			}
 			
-			const LocationAbbrivation = {
+			const LocationAbbreviation = {
 				1: 'HD',
                 2: 'CT',
                 3: 'LT',
@@ -205,6 +209,7 @@
 				const ams = document.getElementById("ams").checked;
 				const artemis = document.getElementById("artemis").checked;
 				const additionalMods = parseInt($(".clusterhit-size-add").val()) || 0;
+                const repeats = parseInt($(".clusterhit-size-repeats").val()) || 1;
 				
 				const facingFront = document.getElementById("facing-front").checked;
 				const facingLeft = document.getElementById("facing-left").checked;
@@ -225,7 +230,7 @@
 				
 				// Roll locations
 				// ------------------------------------------------
-				const {hits, total, originalDieRoll, damageTotal, numDamageGroups, hitOrder} = rollAll(weaponShots, damagePerShot, damagePerGroup, totalMods, hitDirection, streak, floatingCrits);
+				const {hits, totals, originalDieRolls, damageTotal, damageGroups, hitOrder} = rollAll(weaponShots, damagePerShot, damagePerGroup, totalMods, hitDirection, streak, floatingCrits, repeats);
 				
 				
 				// Report general info
@@ -236,11 +241,21 @@
 				
 				if (streak && !ams)
 					rolled.html("You rolled a unmodified streak weapon for max damage");
-				else
-					rolled.html("You rolled <h1>(" + originalDieRoll + "+" + totalMods + ")= " + total + "</h1>");
+				else {
+                    if (repeats == 1)
+                        rolled.html("You rolled <h1>(" + originalDieRoll + "+" + totalMods + ")= " + total + "</h1>");
+                    else {
+                        rolledtext = "You rolled ";
+                        for (var i = 0; i < repeats; i++) {
+                            rolledtext.concat("<h2>(" + originalDieRolls[i] + "+" + totalMods + ")= " + total + "</h2>\n");
+                        }
+                        rolled.html(rolledtext);
+                    }
+                }
+					
 				
 				amount.html("You did <h1>" + damageTotal + " Damage total</h1>");
-				groups.html("Grouping by " + damagePerGroup + " this would be <h1>" + group(damageTotal, damagePerGroup) + "</h1>");
+				groups.html("Grouping by " + damagePerGroup + " this would be <h1>" + damageGroups.join("-") + "</h1>");
 				
 				
 				// Display locations
@@ -259,7 +274,7 @@
 				// Display hit order
 				// ------------------------------------------------
 				var hitOrderLocation = $(".hit-order");
-				hitOrderLocation.html(hitOrder.join(" -> "))
+				hitOrderLocation.html(hitOrder.map(x => String(x[0]) + " (" + String(x[1]) + ")").join(" -> "));
 				
 				
 			});
@@ -272,7 +287,58 @@
 								"<td class=\"text-center\">" + hits['hits'].join('-') + " (" + String(hits['total']) + ")" + "</td></tr>");
 			}
 
-            function rollAll(numShots, damagePerShot, clusterSize, clusterMod, facing, streak, floatingCrits) {
+            function rollAll(numShots, damagePerShot, clusterSize, clusterMod, facing, streak, floatingCrits, repeats) {
+                var damageGroups = [];
+                var totals = [];
+                var originalDieRolls = [];
+                var damageTotal = 0;
+                var numDamageGroups = 0;
+                for (var i = 0; i < repeats; i++) {
+                    var {damageGroups_i, total_i, originalDieRoll_i, damageTotal_i, numDamageGroups_i} = getClusters(numShots, damagePerShot, clusterSize, clusterMod, streak);
+                    damageGroups.concat(damageGroups_i);
+                    totals.push(total_i);
+                    originalDieRolls.push(originalDieRoll_i);
+                    damageTotal += damageTotal_i;
+                    numDamageGroups += numDamageGroups_i;
+                }
+
+                var hits = {}
+				const hitOrder = []
+                for (var i = 0; i < damageGroups.length; i++) {
+                    var damageVal = damageGroups[i];
+                    var damageString = String(damageVal);
+                    var loc = locations[roll(2)-2][facing];
+                    if (loc == Location._){
+                        if (floatingCrits){
+                            while (loc == Location._){
+                                loc = locations[roll(2)-2][facing];
+                            }
+                        }else{
+                            if (facing == Facing.Left)
+                                loc = Location.LT
+                            else if (facing == Facing.Front)
+                                loc = Location.CT
+                            else if (facing == Facing.Right)
+                                loc = Location.RT
+                        }
+                        damageString = damageString.concat('*')
+						hitOrder.push(LocationAbbreviation[loc].concat('*'));
+                    } 
+                    hitOrder.push([LocationAbbreviation[loc], damageString]);
+                    if (!hits[loc]){
+                        hits[loc] = {'hits':[damageString], 'total':damageVal}
+                    }
+                    else{
+                        hits[loc]['hits'].push(damageString);
+                        hits[loc]['total'] += damageVal;
+                    } 
+					
+                }        
+
+                return {hits, totals, originalDieRolls, damageTotal, damageGroups, hitOrder}
+            }
+
+            function getClusters(numShots, damagePerShot, clusterSize, clusterMod, streak){
                 var size = numShots;
 				var originalDieRoll = roll(2);
                 var total = originalDieRoll;
@@ -302,42 +368,8 @@
                 if (remainder > 0){
                     damageGroups.push(remainder)
                 }
-
-                var hits = {}
-				const hitOrder = []
-                for (var i = 0; i < damageGroups.length; i++) {
-                    var damageVal = damageGroups[i];
-                    var damageString = String(damageVal);
-                    var loc = locations[roll(2)-2][facing];
-                    if (loc == Location._){
-                        if (floatingCrits){
-                            while (loc == Location._){
-                                loc = locations[roll(2)-2][facing];
-                            }
-                        }else{
-                            if (facing == Facing.Left)
-                                loc = Location.LT
-                            else if (facing == Facing.Front)
-                                loc = Location.CT
-                            else if (facing == Facing.Right)
-                                loc = Location.RT
-                        }
-                        damageString = damageString.concat('*')
-						hitOrder.push(LocationAbbrivation[loc].concat('*'));
-                    } else {
-						hitOrder.push(LocationAbbrivation[loc]);
-					}
-                    if (!hits[loc]){
-                        hits[loc] = {'hits':[damageString], 'total':damageVal}
-                    }
-                    else{
-                        hits[loc]['hits'].push(damageString);
-                        hits[loc]['total'] += damageVal;
-                    } 
-					
-                }        
-
-                return {hits, total, originalDieRoll, damageTotal, numDamageGroups, hitOrder}
+                
+                return {damageGroups, total, originalDieRoll, damageTotal, numDamageGroups}
             }
 
 			function group(damage, damagePerGroup) {
