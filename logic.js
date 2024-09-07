@@ -110,7 +110,16 @@ function rollAll(numShots, damagePerShot, clusterSize, clusterMod, facing, strea
         netNumDamageGroups += numDamageGroups;
     }
 
-    var hits = {}
+    var hits = {
+        [BipedHitLocationList.H]: { 'hits': [], 'total': 0 },
+        [BipedHitLocationList.CT]: { 'hits': [], 'total': 0 },
+        [BipedHitLocationList.LT]: { 'hits': [], 'total': 0 },
+        [BipedHitLocationList.RT]: { 'hits': [], 'total': 0 },
+        [BipedHitLocationList.LA]: { 'hits': [], 'total': 0 },
+        [BipedHitLocationList.RA]: { 'hits': [], 'total': 0 },
+        [BipedHitLocationList.LL]: { 'hits': [], 'total': 0 },
+        [BipedHitLocationList.RL]: { 'hits': [], 'total': 0 },
+    }
     const hitOrder = []
     for (var i = 0; i < allDamageGroups.length; i++) {
         var damageVal = allDamageGroups[i];
@@ -132,13 +141,8 @@ function rollAll(numShots, damagePerShot, clusterSize, clusterMod, facing, strea
             damageString = '<b>' + damageString + '*</b>'
         }
         hitOrder.push([BipedLocationAbbreviation[loc], damageString]);
-        if (!hits[loc]) {
-            hits[loc] = { 'hits': [damageString], 'total': damageVal }
-        }
-        else {
-            hits[loc]['hits'].push(damageString);
-            hits[loc]['total'] += damageVal;
-        }
+        hits[loc]['hits'].push(damageString);
+        hits[loc]['total'] += damageVal;
 
     }
 
