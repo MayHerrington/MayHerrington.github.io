@@ -183,22 +183,6 @@ function getClusters(numShots, damagePerShot, clusterSize, clusterMod, streak) {
     return { damageGroups, total, originalDieRoll, damageTotal, numDamageGroups }
 }
 
-function group(damage, damagePerGroup) {
-    var grouping = "";
-
-    //If we have more then 5 let's parse out by 5's
-    if (damage >= damagePerGroup) {
-        for (var i = 0; i < Math.floor(damage / damagePerGroup); i++) {
-            grouping += damagePerGroup + "-";
-        }
-    }
-
-    //Add any leftover damage
-    if (damage % damagePerGroup > 0)
-        grouping += damage % damagePerGroup + "-";
-
-    return grouping.substr(0, grouping.length - 1);
-}
 
 function roll(numberofDice) {
     if (numberofDice == 0)
