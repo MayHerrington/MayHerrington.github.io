@@ -82,7 +82,6 @@ $(".clusterhit-roll").click(function () {
     // Display hit order
     // ------------------------------------------------
     var hitOrderLocation = $(".hit-order");
-    //hitOrderLocation.html(hitOrder.join(" -> "));
     hitOrderLocation.html(hitOrder.map(x => String(x[0]) + " (" + String(x[1]) + ")").join(" -> "));
 
 
@@ -116,12 +115,11 @@ function rollAll(numShots, damagePerShot, clusterSize, clusterMod, facing, strea
     for (var i = 0; i < allDamageGroups.length; i++) {
         var damageVal = allDamageGroups[i];
         var damageString = String(damageVal);
-        const locationRoll = roll(2) - 2
         var loc = BipedLocations[roll(2) - 2][facing];
         if (loc == BipedHitLocationList.crit) {
             if (floatingCrits) {
                 while (loc == BipedHitLocationList.crit) {
-                    loc = BipedHitLocationList[roll(2) - 2][facing];
+                    loc = BipedLocations[roll(2) - 2][facing];
                 }
             } else {
                 if (facing == Facing.Left)
@@ -131,7 +129,7 @@ function rollAll(numShots, damagePerShot, clusterSize, clusterMod, facing, strea
                 else if (facing == Facing.Right)
                     loc = BipedHitLocationList.RT
             }
-            damageString = damageString.concat('*')
+            damageString = '<b>' + damageString + '*</b>'
         }
         hitOrder.push([BipedLocationAbbreviation[loc], damageString]);
         if (!hits[loc]) {
