@@ -1,4 +1,21 @@
-import { BipedHitLocationList, BipedLocationAbbreviation, BipedLocationName, BipedLocations, clusterHitTables, Facing } from "./data.js";
+import { BipedHitLocationList, BipedLocationAbbreviation, BipedLocationName, BipedLocations, clusterHitTables, Facing, weaponPresets } from "./data.js";
+
+document.getElementById("weaponPresets").addEventListener("change", (event) => {
+    const selectedWeapon = event.target.value;
+    const weaponData = weaponPresets[selectedWeapon];
+
+    document.getElementById("weapon-shots").value = weaponData.weaponShots;
+    document.getElementById("damage-per-shot").value = weaponData.damagePerShot;
+    document.getElementById("cluster-size").value = weaponData.clusterSize;
+    document.getElementById("streak").checked = weaponData.streak || false;
+    document.getElementById("artemis").checked = weaponData.artemis || false;
+
+
+    // reset defaults
+    document.getElementById("ams").checked = false;
+    document.getElementById("clusterhit-size-add").value = 0;
+
+}, "false")
 
 $(".weapon").click(function () {
     $(".clusterhit-size").val($(this).text());
@@ -9,17 +26,16 @@ $(".weapon").click(function () {
 $(".clusterhit-roll").click(function () {
     // User Inputs
     // ------------------------------------------------
-    const weaponShots = $(".clusterhit-size").val();
-    const damagePerShot = $(".clusterhit-shot-damage").val();
-    const damagePerGroup = parseInt($(".clusterhit-size-damage").val()) || 1;
+    const weaponShots = parseInt(document.getElementById("weapon-shots").value);
+    const damagePerShot = parseInt(document.getElementById("damage-per-shot").value);
+    const damagePerGroup = parseInt(document.getElementById("cluster-size").value);
 
     const streak = document.getElementById("streak").checked;
     const ams = document.getElementById("ams").checked;
     const artemis = document.getElementById("artemis").checked;
-    const additionalMods = parseInt($(".clusterhit-size-add").val()) || 0;
+    const additionalMods = parseInt(document.getElementById("clusterhit-size-add").value);
     const repeats = parseInt($(".clusterhit-size-repeats").val()) || 1;
 
-    const facingFront = document.getElementById("facing-front").checked;
     const facingLeft = document.getElementById("facing-left").checked;
     const facingRight = document.getElementById("facing-right").checked;
 
