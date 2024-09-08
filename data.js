@@ -1,3 +1,17 @@
+export const weaponPresets = {
+    default: { title: "Default", weaponShots: 2, damagePerShot: 1, clusterSize: 1 },
+    lrm5: { title: "LRM5", weaponShots: 5, damagePerShot: 1, clusterSize: 5 },
+    lrm10: { title: "LRM10", weaponShots: 10, damagePerShot: 1, clusterSize: 5 },
+    lrm15: { title: "LRM15", weaponShots: 15, damagePerShot: 1, clusterSize: 5 },
+    lrm20: { title: "LRM20", weaponShots: 20, damagePerShot: 1, clusterSize: 5 },
+    srm2: { title: "SRM2", weaponShots: 2, damagePerShot: 2, clusterSize: 2 },
+    srm4: { title: "SRM4", weaponShots: 4, damagePerShot: 2, clusterSize: 2 },
+    srm6: { title: "SRM6", weaponShots: 6, damagePerShot: 2, clusterSize: 2 },
+    streakSrm2: { title: "Streak SRM2", weaponShots: 2, damagePerShot: 2, clusterSize: 2, streak: true },
+    streakSrm4: { title: "Streak SRM4", weaponShots: 4, damagePerShot: 2, clusterSize: 2, streak: true },
+    streakSrm6: { title: "Streak SRM6", weaponShots: 6, damagePerShot: 2, clusterSize: 2, streak: true },
+}
+
 export const clusterHitTables = [
     [1, 1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 9, 9, 9, 10, 10, 12],
     [1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 9, 9, 9, 10, 10, 12],
