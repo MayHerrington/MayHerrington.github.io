@@ -69,7 +69,7 @@ $(".clusterhit-roll").click(function () {
         if (repeats == 1)
             rolled.html("You rolled <h1>(" + originalDieRolls[0] + "+" + totalMods + ")= " + totals[0] + "</h1>");
         else {
-            rolledtext = "You rolled ";
+            var rolledtext = "You rolled ";
             for (var i = 0; i < repeats; i++) {
                 rolledtext = rolledtext.concat("<h2>(" + originalDieRolls[i] + "+" + totalMods + ")= " + totals[i] + "</h2>\n");
             }
