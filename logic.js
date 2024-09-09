@@ -13,9 +13,23 @@ document.getElementById("weaponPresets").addEventListener("change", (event) => {
 
     // reset defaults
     document.getElementById("ams").checked = false;
-    document.getElementById("clusterhit-size-add").value = 0;
+    document.getElementById("clusterhit-additional-modifiers").value = 0;
 
 }, "false")
+
+document.getElementById("cluster-button-up").onclick = () => {
+    const additionalModifiers = document.getElementById("clusterhit-additional-modifiers")
+    if (additionalModifiers.value < 12) {
+        additionalModifiers.value = parseInt(additionalModifiers.value) + 1
+    }
+};
+
+document.getElementById("cluster-button-down").onclick = () => {
+    const additionalModifiers = document.getElementById("clusterhit-additional-modifiers")
+    if (additionalModifiers.value > -12) {
+        additionalModifiers.value = parseInt(additionalModifiers.value) - 1
+    }
+};
 
 $(".weapon").click(function () {
     $(".clusterhit-size").val($(this).text());
@@ -33,7 +47,7 @@ $(".clusterhit-roll").click(function () {
     const streak = document.getElementById("streak").checked;
     const ams = document.getElementById("ams").checked;
     const artemis = document.getElementById("artemis").checked;
-    const additionalMods = parseInt(document.getElementById("clusterhit-size-add").value);
+    const additionalMods = parseInt(document.getElementById("clusterhit-additional-modifiers").value);
     const repeats = parseInt($(".clusterhit-size-repeats").val()) || 1;
 
     const facingLeft = document.getElementById("facing-left").checked;

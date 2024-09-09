@@ -62,11 +62,22 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="form-group">
+			<div class="container clusterModifierContainer">
 				<label>Additional cluster roll modifiers</label>
-				<input type="number" value="0" step="1" inputmode="url" id="clusterhit-size-add"
-					class="form-control select-all" />
+				<div class="row">
+					<div class="col-sm-2 clusterInput">
+						<input type="number" value="0" step="1" min="-12" max="12" id="clusterhit-additional-modifiers"
+							class="form-control select-all clusterhit-additional-modifiers" />
+					</div>
+					<div class="col-sm-2 clusterButtons">
+						<button class="btn btn-primary" id="cluster-button-up" style="width: 100%; font-size: 16px">↑</button>
+					</div>
+					<div class="col-sm-2 clusterButtons">
+						<button class="btn btn-primary" id="cluster-button-down" style="width: 100%; font-size: 16px">↓</button>
+					</div>
+				</div>
 			</div>
+
 			<hr class="solid">
 			<div class="form-group">
 				<table class="table table-hover">

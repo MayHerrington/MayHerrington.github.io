@@ -1,1 +1,7 @@
 .controls {padding: 10px;  margin: 0px;}
+
+.clusterModifierContainer {width: 100%; padding: 0px;}
+
+.clusterButtons {width: 15%; padding-left: 0px; padding-right: 5px;}
+
+.clusterInput {width: 70%; position: relative; top: 2px; padding-right: 5px;}
