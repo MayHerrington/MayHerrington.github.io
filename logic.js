@@ -157,17 +157,19 @@ function rollAll(numShots, damagePerShot, clusterSize, clusterMod, facing, strea
         var loc = BipedLocations[roll(2) - 2][facing];
         if (loc == BipedHitLocationList.crit) {
             if (floatingCrits) {
-                while (loc == BipedHitLocationList.crit) {
-                    loc = BipedLocations[roll(2) - 2][facing];
-                }
-            } else {
-                if (facing == Facing.Left)
-                    loc = BipedHitLocationList.LT
-                else if (facing == Facing.Front)
-                    loc = BipedHitLocationList.CT
-                else if (facing == Facing.Right)
-                    loc = BipedHitLocationList.RT
+                loc = BipedLocations[roll(2) - 2][facing]
             }
+
+            if ((floatingCrits && loc == BipedHitLocationList.crit) || !floatingCrits) {
+                if (facing == Facing.Left) {
+                    loc = BipedHitLocationList.LT
+                } else if (facing == Facing.Front) {
+                    loc = BipedHitLocationList.CT
+                } else if (facing == Facing.Right) {
+                    loc = BipedHitLocationList.RT
+                }
+            }
+
             damageString = '<b>' + damageString + '*</b>'
         }
         hitOrder.push([BipedLocationAbbreviation[loc], damageString]);
