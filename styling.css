@@ -1,8 +1,8 @@
 .controls {padding: 10px;  margin: 0px;}
 
-.clusterModifierContainer {width: 100%; padding: 0px; margin: 0;}
+.clusterModifierContainer { display: grid; grid-template-columns: 70% 15% 15%; width: 100%;}
 
-.clusterButtons {width: 15%; padding-left: 5px; padding-right: 0px;}
+.clusterButtons {width: 100%; padding-left: 5px;}
 
-.clusterInput {width: 45%; position: relative; top: 2px; padding-left: 0px; padding-right: 0px;}
+.clusterInput {width: 100%; position: relative; top: 2px;}
 
